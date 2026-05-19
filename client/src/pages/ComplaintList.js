@@ -16,6 +16,15 @@ function ComplaintList() {
     try {
 
       const token = localStorage.getItem("token");
+      if (!token) {
+
+  alert("Please Login First");
+
+  window.location.href = "/login";
+
+  return;
+
+}
 
       const res = await axios.get(
         "https://ai-complaint-system-8rbj.onrender.com/api/complaints",

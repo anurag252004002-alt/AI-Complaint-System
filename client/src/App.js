@@ -6,6 +6,8 @@ import {
   Route
 } from "react-router-dom";
 
+import Navbar from "./components/Navbar";
+
 import AddComplaint from "./pages/AddComplaint";
 import ComplaintList from "./pages/ComplaintList";
 import Login from "./pages/Login";
@@ -16,6 +18,8 @@ function App() {
   return (
 
     <BrowserRouter>
+
+      <Navbar />
 
       <Routes>
 
