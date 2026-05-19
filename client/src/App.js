@@ -6,11 +6,10 @@ import {
   Route
 } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
-
 import AddComplaint from "./pages/AddComplaint";
-
 import ComplaintList from "./pages/ComplaintList";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
 
@@ -18,33 +17,31 @@ function App() {
 
     <BrowserRouter>
 
-      <Navbar />
+      <Routes>
 
-      <div className="container mt-4">
+        <Route path="/" element={<AddComplaint />} />
 
-        <h2 className="text-center mb-4">
-          AI Complaint Management System
-        </h2>
+        <Route
+          path="/complaints"
+          element={<ComplaintList />}
+        />
 
-        <Routes>
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-          <Route
-            path="/"
-            element={<AddComplaint />}
-          />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
 
-          <Route
-            path="/complaints"
-            element={<ComplaintList />}
-          />
-
-        </Routes>
-
-      </div>
+      </Routes>
 
     </BrowserRouter>
 
   );
+
 }
 
 export default App;
