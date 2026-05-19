@@ -4,7 +4,6 @@ import axios from "axios";
 function ComplaintList() {
 
   const [complaints, setComplaints] = useState([]);
-  const [search, setSearch] = useState("");
 
   useEffect(() => {
 
@@ -16,8 +15,15 @@ function ComplaintList() {
 
     try {
 
+      const token = localStorage.getItem("token");
+
       const res = await axios.get(
-        "http://localhost:5000/api/complaints"
+        "https://ai-complaint-system-8rbj.onrender.com/api/complaints",
+        {
+          headers: {
+            Authorization: token
+          }
+        }
       );
 
       setComplaints(res.data);
@@ -27,139 +33,65 @@ function ComplaintList() {
       console.log(error);
 
     }
-  };
 
-  const updateStatus = async (id, status) => {
-
-    try {
-
-      await axios.put(
-        `http://localhost:5000/api/complaints/${id}`,
-        { status }
-      );
-
-      fetchComplaints();
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-  };
-
-  const searchLocation = async () => {
-
-    try {
-
-      const res = await axios.get(
-        `http://localhost:5000/api/complaints/search/location?location=${search}`
-      );
-
-      setComplaints(res.data);
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
   };
 
   return (
 
-    <div>
+    <div className="container mt-4">
 
-      <h3 className="mb-4">
-        All Complaints
-      </h3>
+      <h2 className="mb-4 text-center">
+        Complaint List
+      </h2>
 
-      <div className="d-flex mb-3">
+      <div className="row">
 
-        <input
-          type="text"
-          placeholder="Search by Location"
-          className="form-control me-2"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        {
+          complaints.map((item) => (
 
-        <button
-          className="btn btn-primary"
-          onClick={searchLocation}
-        >
-          Search
-        </button>
+            <div className="col-md-6 mb-4" key={item._id}>
+
+              <div className="card shadow p-3">
+
+                <h4>{item.title}</h4>
+
+                <p>
+                  <strong>Name:</strong> {item.name}
+                </p>
+
+                <p>
+                  <strong>Email:</strong> {item.email}
+                </p>
+
+                <p>
+                  <strong>Description:</strong> {item.description}
+                </p>
+
+                <p>
+                  <strong>Category:</strong> {item.category}
+                </p>
+
+                <p>
+                  <strong>Location:</strong> {item.location}
+                </p>
+
+                <p>
+                  <strong>Status:</strong> {item.status}
+                </p>
+
+              </div>
+
+            </div>
+
+          ))
+        }
 
       </div>
 
-      <table className="table table-bordered">
-
-        <thead>
-
-          <tr>
-
-            <th>Name</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Update</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          {
-            complaints.map((item) => (
-
-              <tr key={item._id}>
-
-                <td>{item.name}</td>
-
-                <td>{item.title}</td>
-
-                <td>{item.category}</td>
-
-                <td>{item.location}</td>
-
-                <td>
-
-                  <span className="badge bg-warning text-dark">
-                    {item.status}
-                  </span>
-
-                </td>
-
-                <td>
-
-                  <select
-                    className="form-select"
-                    value={item.status}
-                    onChange={(e) =>
-                      updateStatus(item._id, e.target.value)
-                    }
-                  >
-
-                    <option>Pending</option>
-                    <option>In Progress</option>
-                    <option>Resolved</option>
-
-                  </select>
-
-                </td>
-
-              </tr>
-
-            ))
-          }
-
-        </tbody>
-
-      </table>
-
     </div>
+
   );
+
 }
 
 export default ComplaintList;
